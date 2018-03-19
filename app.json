@@ -1,0 +1,31 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#67A5D5",
+    "navigationBarTitleText": "集成背景墙示例程序",
+    "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "列表"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "text": "分页"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "text": "跳页"
+      },{
+        "pagePath": "pages/logs/logs",
+        "text": "分享"
+      }
+    ]
+  }
+}
