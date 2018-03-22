@@ -1,3 +1,9 @@
+.myswiper{
+  height: 100%
+}
+.slide-image{
+  overflow: hidden; position: absolute; 
+}
 .log-list {
   display: flex;
   flex-direction: column;
