@@ -1,13 +1,14 @@
 {
-  "pages":[
+  "pages": [
     "pages/logs/logs",
-    "pages/index/index"
+    "pages/index/index",
+    "pages/cssbook/book"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#67A5D5",
     "navigationBarTitleText": "集成背景墙示例程序",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "list": [
@@ -22,7 +23,8 @@
       {
         "pagePath": "pages/logs/logs",
         "text": "跳页"
-      },{
+      },
+      {
         "pagePath": "pages/logs/logs",
         "text": "分享"
       }
