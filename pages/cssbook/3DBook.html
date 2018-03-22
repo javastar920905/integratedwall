@@ -47,6 +47,16 @@ transform: rotateX(30deg);
 
 }
 
+
+/**
+	前面都是书本的css设置,后面才是模拟翻页的设置
+	0 perspective:2000px; 父容器设置透视效果(注意控制大小)
+	1 transform-origin: 0; 控制单边翻页
+	2 transition-duration 控制翻页速度,否则显示不了效果
+	3 transform-style: preserve-3d; 开启3d效果,否则只有2d平滑过渡
+	4 transform='rotateY(-180deg)'  控制沿着y轴坐标翻页角度
+	5(可省略) transition-timing-function: ease-in; 控制翻页速度 
+**/
 .page{
 z-index:1;
 position: absolute;
@@ -64,6 +74,10 @@ transform-origin: 0;
 
 -webkit-transition-timing-function: ease-in;
 transition-timing-function: ease-in;
+
+/**翻页速度**/
+transition-duration: 5s;
+-webkit-transition-duration: 5s; 
 
 }
 
@@ -92,21 +106,17 @@ transition-timing-function: ease-in;
 </body>
 
 <script type="text/javascript">
-
 	var book=document.getElementById('book');
 
-/**
-	js 数组操作 http://www.w3school.com.cn/jsref/jsref_obj_array.asp
-**/
-	var pages=document.getElementsByTagName('div');
-	//转换为数组对象
+	/**
+		js 数组操作 http://www.w3school.com.cn/jsref/jsref_obj_array.asp
+	**/
+	var pages=document.getElementsByClassName('page');
+	//未读图片,转换为数组对象
 	var unReadPages=Array.from(pages);
-		//删除container,book元素(都是div标签)
-	console.log(unReadPages.shift());//删除并返回数组的第一个元素
-	console.log(unReadPages.shift());
-	
-
+	//已读图片
 	var readPages=[];
+
 	/**点击开始翻书效果**/
     book.onclick=function(){
 		var page=unReadPages.shift();
@@ -114,8 +124,6 @@ transition-timing-function: ease-in;
 		{
 			// 负数角度(从右往左翻书) 沿着y轴(0,180)  http://www.runoob.com/cssref/css3-pr-transform.html (查看Css3 Transform 各种变形旋转)
 		   page.style.transform='rotateY(-180deg)';
-		   page.style.transition='5s';
-		   page.style.transformOrigin='0'
 		   //向已读队列的末尾添加一个或更多元素，并返回新的长度。
 		   readPages.push(page)
 		}
@@ -130,11 +138,8 @@ transition-timing-function: ease-in;
 		if(page!=undefined){
 			// 正数角度(从左往右翻书,恢复到原始角度) 沿着y轴(-180,0)  http://www.runoob.com/cssref/css3-pr-transform.html (查看Css3 Transform 各种变形旋转)
            page.style.transform='rotateY(0deg)';
-           page.style.transition='5s';
-		    page.style.transformOrigin='0';
 			//向数组的开头添加一个或更多元素，并返回新的长度。
 		  unReadPages.unshift(page);
-		   
 		}
 		
     }

@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/cssbook/book",
     "pages/logs/logs",
-    "pages/index/index",
-    "pages/cssbook/book"
+    "pages/index/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

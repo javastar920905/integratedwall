@@ -34,6 +34,11 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    touch: {
+      lastX: 0,
+      lastY: 0,
+      direction: ""
+    }
   }
 })

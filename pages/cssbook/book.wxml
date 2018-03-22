@@ -1,2 +1,16 @@
-<!--pages/cssbook/book.wxml-->
-<text>pages/cssbook/book.wxml</text>
+<!--logs.wxml-->
+<view   bind:touchstart="handletouchtart" bind:touchend='handletouchend' class="myswiper pre-3d" style="height: {{clientHeight?clientHeight+'px':'auto'}}">
+
+  <block wx:for="{{unreadImgs}}" wx:key="img" >  
+      <image' src="{{imgPrefix}}{{item.img}}{{imgSuffix}}" class="slide-image" 
+       style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};"/>  
+  </block>   
+       <!-- <image' src="{{imgPrefix}}1.jpg" class="slide-image pre-3d" 
+       style="transform: rotateY({{rotateY}}deg);z-index:2;"/>  
+        <image' src="{{imgPrefix}}2.jpg" class="slide-image pre-3d" 
+       style="transform: rotateY(0deg);z-index:1;"/> 
+       <image' src="{{imgPrefix}}3.jpg" class="slide-image pre-3d" 
+       style="transform: rotateY(0deg);z-index:1;"/>     -->
+  </view>
+
+
