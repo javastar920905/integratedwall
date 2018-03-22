@@ -29,6 +29,7 @@ Page({
       //左滑
       //console.log("left=" + this.data.readIdx)
       if (this.data.readIdx <= unreadImgs.length-1){
+        //TODO skill 這裡更新數據屬性 也可以實現類似操作demo的效果
         unreadImgs[this.data.readIdx].y = -90;
         //z-index=數組長度-元素下標位置
         unreadImgs[this.data.readIdx].zidx = unreadImgs.length - this.data.readIdx;
