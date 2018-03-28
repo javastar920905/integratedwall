@@ -1,23 +1,27 @@
 <!--logs.wxml-->
 <view style="background:url({{imgPrefix}}backGroundImgURL.jpg)">
-  <view class='headTop'>dingbu</view>
-  <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-60+'px':'auto'}}">
+  <view class='headTop'>
+    <view class='headTop-child {{headTopAnimate}}'>help?</view>
+  </view>
+  <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handletap' class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-60+'px':'auto'}}">
 
     <block wx:for="{{unreadImgs}}" wx:key="img">
-      <image src="{{imgPrefix}}{{item.img}}{{imgSuffix}}" class="slide-image" 
-       style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};"/>  
-  </block>   
-      
+      <image src="{{imgPrefix}}{{item.img}}{{imgSuffix}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
+    </block>
+
   </view>
-    <view class='bottomTab '>
+  <view class='bottomTab'>
+    <view class='bottomTab-child {{bottomAnimate}}'>
       <view class='buttomTabItem '>
-        <image class='buttomImage ' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAWklEQVRIS2NkoBFgpJG5DPQx+MyZM/9x+cDExATsCGLUgNShuBikCWYAsgXI4sSoGTUYJRjpF8Y0SRXUzCyjGQQeAvRLFaNZGpyEiSkSiVGDUboNvQxCTRcDAF8swBeCta3+AAAAAElFTkSuQmCC ' />
+        <image class='buttomImage ' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAWklEQVRIS2NkoBFgpJG5DPQx+MyZM/9x+cDExATsCGLUgNShuBikCWYAsgXI4sSoGTUYJRjpF8Y0SRXUzCyjGQQeAvRLFaNZGpyEiSkSiVGDUboNvQxCTRcDAF8swBeCta3+AAAAAElFTkSuQmCC '
+        />
       </view>
-        <view class='buttomTabItem '>
-        <image class='buttomImage ' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAATklEQVRIS2NkoBFgpJG5DMPA4DNnzvyHBY+JiQkjMp9QsIHUw9RgBAXIIJiByAoJGYouj9VgmriYVJfhUj+aKkZTBWbaGE0Vo6liOKQKANZ4SBcS9xvdAAAAAElFTkSuQmCC '/>
+      <view class='buttomTabItem '>
+        <image class='buttomImage ' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAATklEQVRIS2NkoBFgpJG5DMPA4DNnzvyHBY+JiQkjMp9QsIHUw9RgBAXIIJiByAoJGYouj9VgmriYVJfhUj+aKkZTBWbaGE0Vo6liOKQKANZ4SBcS9xvdAAAAAElFTkSuQmCC ' />
       </view>
-       <view class='buttomTabItem '>
+      <view class='buttomTabItem '>
         <image class='buttomImage ' src="{{iconPrefix}}search.png" />
-      </view> 
+      </view>
     </view>
   </view>
+</view>
