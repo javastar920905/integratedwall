@@ -1,39 +1,55 @@
 /* pages/cssbook/book.wxss */
-.myswiper{
-  height: 100%;
+
+.myswiper {
+  height: 80%;
   z-index: 0;
-   position: relative;
-  background-color: yellowgreen;
- 
-
-  -webkit-perspective:5000px; /* Safari and Chrome */
--moz-perspective:5000px;
--ms-perspective:5000px;
--o-perspective:5000px;
-perspective:5000px;
+  position: relative;
+  -webkit-perspective: 5000px; /* Safari and Chrome */
+  -moz-perspective: 5000px;
+  -ms-perspective: 5000px;
+  -o-perspective: 5000px;
+  perspective: 5000px;
 }
-.slide-image{
-    margin-top: 8%;
-  height:90%;
-  overflow: hidden; position: absolute; 
+.headTop{
+  height:30px;
+}
+.bottomTab{
+  height:30px;
+   background-color: rgb(68, 68, 68); 
+}
+.slide-image {
+  /* margin-top: 8%; */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
   /**可以保证 rotateY()的时候,只有右半侧被翻转,更接近翻书效果**/
--webkit-transform-origin: 0;
--moz-transform-origin: 0;
--ms-transform-origin: 0;
--o-transform-origin: 0;
-transform-origin: 0;
-
-transition-duration: 3s;
--webkit-transition-duration: 3s; 
-
-transition-timing-function: easet-out;
--webkit-transition-timing-function: ease-out; 
+  -webkit-transform-origin: 0;
+  -moz-transform-origin: 0;
+  -ms-transform-origin: 0;
+  -o-transform-origin: 0;
+  transform-origin: 0;
+  transition-duration: 3s;
+  -webkit-transition-duration: 3s;
+  transition-timing-function: easet-out;
+  -webkit-transition-timing-function: ease-out;
 }
 
 /**开启3d效果 表示所有子元素在3D空间中呈现。**/
-.pre-3d {               
-	-webkit-transform-style: preserve-3d;
-	-moz-transform-style: preserve-3d;
-	-ms-transform-style: preserve-3d;
-	transform-style: preserve-3d;
+
+.pre-3d {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.buttomTabItem{
+  float: left;
+  /* position: static; */
+    display: inline;
+   
+}
+.buttomImage{
+   width: 30px;
+   height: 25px;
 }

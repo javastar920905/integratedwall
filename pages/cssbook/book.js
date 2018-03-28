@@ -2,6 +2,7 @@
 
 const util = require('../../utils/util.js')
 const imgPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/"
+// const iconPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/icon"
 const innerImgs = [1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454];
 const imgSuffix = ".jpg";
 var app = getApp();
@@ -14,6 +15,7 @@ Page({
     unreadImgs: [],
     imgPrefix: '',
     imgSuffix: '',
+    iconPrefix: "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/icon/",
     clientHeight: '',
     clientWidth: '',
     rotateY: 0,
