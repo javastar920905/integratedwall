@@ -1,29 +1,43 @@
-//logs.js
-
+var app = getApp();
 const util = require('../../utils/util.js')
+// 图片地址信息
 const imgPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/"
 const iconPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/icon/"
-const innerImgs = [1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454];
 const imgSuffix = ".jpg";
-var app = getApp();
-/**圖片信息 圖片名,當前y軸角度,z-index=(數組長度-元素下標位置 **/
+
+// 模拟所有图片队列
+const innerImgs = [1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
+   ,1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
+  ,1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
+  , 1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
+  ];
+/**未读图片队列 圖片名,當前y軸角度,z-index=(數組長度-元素下標位置 **/
 var unreadImgs = [{ img: 1, y: 0, zidx: 3 }, { img: 2, y: 0, zidx: 2 }, { img: 3, y: 1, zidx: 1 }];
-var order = ['red', 'yellow', 'blue', 'green', 'red']
+
+//队列 api参考文档 http://www.w3school.com.cn/jsref/jsref_splice.asp
+// 滚动一次加载数量
+const lazySize = 12;
+const maxSize = innerImgs.length;
+// 所有图片懒加载队列
+const lazyImgs = new Array(maxSize);
+
+
 
 Page({
   data: {
+    lazyImgs: lazyImgs,
+    loadedImgStart: 0,
+    loadedImgEnd: lazySize,
     unreadImgs: unreadImgs,
+    readIdx: 0,
     imgPrefix: imgPrefix,
     imgSuffix: imgSuffix,
     iconPrefix: iconPrefix,
     clientHeight: '',
     clientWidth: '',
-    readIdx: 0,
     headTopAnimate: 'slideUp',
     bottomAnimate: 'bottomSlideDown',
-    isShowAllImages:false,
-    toView: 'red',
-    scrollTop: 100
+    isShowAllImages: false
   },
   handletap: function () {
     if (this.data.headTopAnimate == "slideDown") {
@@ -76,19 +90,46 @@ Page({
 
   },
   // 展示所有背景墙图片
-  showAllImage(){
+  showAllImage() {
     this.setData({
-      isShowAllImages:true
+      isShowAllImages: true
     });
+    this.lazyLoadImg()
   },
-  upper: function (e) {
-    console.log(e)
+  handlescroll: function (e) {
+    //console.log(e.detail)
+    /** deltaX:0,deltaY:-12scrollHeight:1776 (固定值)，scrollLeft:0，scrollTop:213（下滑变大）scrollWidth:320 （固定值）**/
+    let mod = e.detail.scrollTop % 200;
+    // console.log(mod)
+    if (mod > 150) {
+      this.lazyLoadImg();
+    }
   },
-  lower: function (e) {
-    console.log(e)
-  },
-  scroll: function (e) {
-    console.log(e)
+  lazyLoadImg: function () {
+    let bufferImgs = innerImgs.slice(this.data.loadedImgStart, this.data.loadedImgEnd);
+    console.log(bufferImgs);
+    if(bufferImgs.length>0){
+      for (var i = 0; i < bufferImgs.length; i++) {
+        if (bufferImgs[i]!=null){
+          lazyImgs.splice(this.data.loadedImgStart, 1, bufferImgs[i]);
+          this.data.loadedImgStart ++;
+        }else{
+          break;
+        }
+      }
+    
+      this.data.loadedImgEnd = this.data.loadedImgEnd * 2;
+
+      console.log("start"+this.data.loadedImgStart + " end " + this.data.loadedImgEnd);
+       console.log(lazyImgs);
+      this.setData({
+        lazyImgs: lazyImgs
+      });
+    }else{
+      console.log("所有圖片加載完畢")
+      console.log(bufferImgs);
+    }
+    
   },
   onLoad: function () {
     var that = this;
@@ -100,6 +141,6 @@ Page({
         })
       }
     });
-
   }
+
 })
