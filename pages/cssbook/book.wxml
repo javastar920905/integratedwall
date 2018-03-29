@@ -3,16 +3,30 @@
   <view class='headTop'>
     <view class='headTop-child {{headTopAnimate}}'>help?</view>
   </view>
-  <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handletap' class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-60+'px':'auto'}}">
+  <view class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-60+'px':'auto'}}">
+    <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handletap'>
+      <block wx:for="{{unreadImgs}}" wx:key="img">
+        <image src="{{imgPrefix}}{{item.img}}{{imgSuffix}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
+      </block>
 
-    <block wx:for="{{unreadImgs}}" wx:key="img">
-      <image src="{{imgPrefix}}{{item.img}}{{imgSuffix}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
-    </block>
+    </view>
 
+    <!-- 展示所有背景墙图片wx-if="{{isShowAllImages}}"   -->
+    <view wx-if="{{isShowAllImages}}" class='showAllImages' style="height:{{clientHeight?clientHei+'px':'auto'}}">
+
+      <view class="section">
+        <scroll-view scroll-y style="height:200px;background:red" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+          <view id="green" class="scroll-view-item bc_green" style='background:green; height:200px'></view>
+          <view id="red" class="scroll-view-item bc_red" style='background:red;height:200px'></view>
+          <view id="yellow" class="scroll-view-item bc_yellow" style='background:yellow;height:200px'></view>
+          <view id="blue" class="scroll-view-item bc_blue" style='background:blue;height:200px'></view>
+        </scroll-view>
+      </view>
+    </view>
   </view>
   <view class='bottomTab'>
     <view class='bottomTab-child {{bottomAnimate}}'>
-      <view class='buttomTabItem '>
+      <view class='buttomTabItem' bindtap="showAllImage">
         <image class='buttomImage ' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAWklEQVRIS2NkoBFgpJG5DPQx+MyZM/9x+cDExATsCGLUgNShuBikCWYAsgXI4sSoGTUYJRjpF8Y0SRXUzCyjGQQeAvRLFaNZGpyEiSkSiVGDUboNvQxCTRcDAF8swBeCta3+AAAAAElFTkSuQmCC '
         />
       </view>
@@ -24,4 +38,5 @@
       </view>
     </view>
   </view>
+
 </view>

@@ -91,3 +91,12 @@
   transform: translateY(0px);
   transition: 500ms linear;
 }
+ .showAllImages{
+ position:absolute;
+ top: 0px;
+ left: 0px;
+ bottom: 0px;
+ width: 100%;
+ z-index: 999;
+background-color: rgba(68, 68, 68,0.8);
+} 

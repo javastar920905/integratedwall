@@ -8,6 +8,7 @@ const imgSuffix = ".jpg";
 var app = getApp();
 /**圖片信息 圖片名,當前y軸角度,z-index=(數組長度-元素下標位置 **/
 var unreadImgs = [{ img: 1, y: 0, zidx: 3 }, { img: 2, y: 0, zidx: 2 }, { img: 3, y: 1, zidx: 1 }];
+var order = ['red', 'yellow', 'blue', 'green', 'red']
 
 Page({
   data: {
@@ -19,7 +20,10 @@ Page({
     clientWidth: '',
     readIdx: 0,
     headTopAnimate: 'slideUp',
-    bottomAnimate: 'bottomSlideDown'
+    bottomAnimate: 'bottomSlideDown',
+    isShowAllImages:false,
+    toView: 'red',
+    scrollTop: 100
   },
   handletap: function () {
     if (this.data.headTopAnimate == "slideDown") {
@@ -70,6 +74,21 @@ Page({
       }
     }
 
+  },
+  // 展示所有背景墙图片
+  showAllImage(){
+    this.setData({
+      isShowAllImages:true
+    });
+  },
+  upper: function (e) {
+    console.log(e)
+  },
+  lower: function (e) {
+    console.log(e)
+  },
+  scroll: function (e) {
+    console.log(e)
   },
   onLoad: function () {
     var that = this;
