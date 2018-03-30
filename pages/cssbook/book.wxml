@@ -1,8 +1,12 @@
 <!--背景图-->
 <view style="background:url({{imgPrefix}}backGroundImgURL.jpg)">
-<!--顶部可伸缩 帮助导航  -->
+  <!--顶部可伸缩 帮助导航  -->
   <view class='headTop'>
-    <view class='headTop-child {{headTopAnimate}}'>help?</view>
+    <view class='headTop-child {{headTopAnimate}}' >
+      <view class='headTop-Item' hover-class='buttomTabItem-active'>
+         <image  style=' width: 25px;height: 25px' src="{{iconPrefix}}search.png" />
+      </view>
+    </view>
   </view>
   <!--中间主体翻书效果图册  -->
   <view class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-60+'px':'auto'}}">
@@ -19,7 +23,8 @@
         <scroll-view scroll-y style="height:{{clientHeight?clientHeight-60+'px':'auto'}}" bindscroll="handlescroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
           <view id="scroll-view1" class="scroll-view-item">
             <view wx:for="{{lazyImgs}}" wx:key="img" class="scroll-view-img-box" style="width:{{(clientWidth-70)/3+'px'}};height:{{(clientHeight-60)/4+'px'}}">
-              <image src="{{item!=null?imgPrefix+item+imgSuffix:'loading.gif'}}" class="scroll-view-img" style="{{item==null?'width:32px;height:32px;position: absolute; left:30%; top: 35%;':''}}"/>
+              <image src="{{item==null?'':imgPrefix+item+imgSuffix}}" class="scroll-view-img" />
+              <image src="loading.gif" class="img-loading" hidden="{{item==null?false:'true'}}" />
               <text> {{index+1}} </text>
             </view>
           </view>
@@ -31,15 +36,15 @@
   <!--底部导航  -->
   <view class='bottomTab'>
     <view class='bottomTab-child {{bottomAnimate}}'>
-      <view class='buttomTabItem' bindtap="showAllImage">
-        <image class='buttomImage ' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAWklEQVRIS2NkoBFgpJG5DPQx+MyZM/9x+cDExATsCGLUgNShuBikCWYAsgXI4sSoGTUYJRjpF8Y0SRXUzCyjGQQeAvRLFaNZGpyEiSkSiVGDUboNvQxCTRcDAF8swBeCta3+AAAAAElFTkSuQmCC '
+      <view class='buttomTabItem' hover-class='buttomTabItem-active' bindtap="showAllImage">
+        <image class='buttomImage' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAWklEQVRIS2NkoBFgpJG5DPQx+MyZM/9x+cDExATsCGLUgNShuBikCWYAsgXI4sSoGTUYJRjpF8Y0SRXUzCyjGQQeAvRLFaNZGpyEiSkSiVGDUboNvQxCTRcDAF8swBeCta3+AAAAAElFTkSuQmCC '
         />
       </view>
-      <view class='buttomTabItem '>
-        <image class='buttomImage ' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAATklEQVRIS2NkoBFgpJG5DMPA4DNnzvyHBY+JiQkjMp9QsIHUw9RgBAXIIJiByAoJGYouj9VgmriYVJfhUj+aKkZTBWbaGE0Vo6liOKQKANZ4SBcS9xvdAAAAAElFTkSuQmCC ' />
+      <view class='buttomTabItem' hover-class='buttomTabItem-active'>
+        <image class='buttomImage' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAATklEQVRIS2NkoBFgpJG5DMPA4DNnzvyHBY+JiQkjMp9QsIHUw9RgBAXIIJiByAoJGYouj9VgmriYVJfhUj+aKkZTBWbaGE0Vo6liOKQKANZ4SBcS9xvdAAAAAElFTkSuQmCC ' />
       </view>
-      <view class='buttomTabItem '>
-        <image class='buttomImage ' src="{{iconPrefix}}search.png" />
+      <view class='buttomTabItem' hover-class='buttomTabItem-active'>
+        <image class='buttomImage' src="{{iconPrefix}}search.png" />
       </view>
     </view>
   </view>
