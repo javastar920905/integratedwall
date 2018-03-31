@@ -1,3 +1,8 @@
+<!--
+loading...
+ <view class="loading" hidden='{{hideLoading}}'>
+  <image src='/loading.gif' style='position:absolute;margin-top:{{clientHeight/2-8}}px; margin-left:-30px;  width:60px;height:16px;'></image>
+</view> -->
 <!--背景图-->
 <view style="background:url({{imgPrefix}}backGroundImgURL.jpg)">
   <!--顶部可伸缩 帮助导航  -->

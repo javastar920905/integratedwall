@@ -33,6 +33,7 @@ var timer = '';
 
 Page({
   data: {
+    hideLoading:false,
     lazyImgs: lazyImgs,
     loadedImgStart: 0,
     loadedImgEnd: lazySize,
@@ -256,7 +257,8 @@ Page({
         that.setData({
           clientHeight: res.windowHeight,
           clientWidth: res.windowWidth,
-          unreadImgs: unreadImgs
+          unreadImgs: unreadImgs,
+          hideLoading:true
         })
       }
     });
