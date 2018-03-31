@@ -13,12 +13,22 @@ loading...
       </view>
     </view>
   </view>
+
+
   <!--中间主体翻书效果图册  -->
-  <view class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-80+'px':'auto'}}">
+  <view class="myswiper pre-3d" style="height:{{clientHeight?clientHeight-80+'px':'auto'}};">
     <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handleShowNav'>
-      <block wx:for="{{unreadImgs}}" wx:key="img2">
-        <image src="{{index>readIdx+2?'':imgPrefix+item.img+imgSuffix}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
-      </block>
+      <movable-area style="height: {{clientHeight-80+'px'}};width:{{clientWidth}}px" scale-area>
+        <movable-view style="height: {{clientHeight-80+'px'}};width:{{clientWidth}}px" direction="all" scale scale-min="1" scale-max="4" scale-value="{{scaleVal}}">
+          <block wx:for="{{unreadImgs}}" wx:key="img2">
+            <image src="{{index>readIdx+2?'':imgPrefix+item.img+imgSuffix}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
+          </block>
+          <block wx:for="{{keywords}}" wx:key="keycata">
+            <view hidden='{{readIdx==1?false:true}}' class='contents-item' style='position:absolute;left:22%;top:{{23*index+108}}px;width:55%;height:21px;z-index:999;' bindtap='handleLazyImgTap' data-index="{{item.start}}" hover-class='buttomTabItem-active'></view>
+          </block>
+
+        </movable-view>
+      </movable-area>
     </view>
 
     <!--底部跳页控件  -->
@@ -65,6 +75,7 @@ loading...
     </view>
 
   </view>
+
 
   <!--底部导航  -->
   <view class='bottomTab'>
@@ -123,7 +134,7 @@ loading...
     <view class='search-input'>
       <view class='searchinputView'>
         <form id='searchform' bindsubmit='searchFormSubmit' bindreset="searchFormReset">
-          <input name="searchKeyWord" type='text' placeholder="分類信息，如:大理石" placeholder-class="placeholder-class" />
+          <input name="searchKeyWord" type='text' placeholder="分類信息，如:大理石" placeholder-class="placeholder-class" value='{{searchInputVal}}' />
           <button form-type='submit' plain='true'>
             <image src='/icons/enter.png' />
           </button>

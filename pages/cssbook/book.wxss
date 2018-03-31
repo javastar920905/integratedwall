@@ -6,10 +6,12 @@
   width: 100%;
   height: 100%;
   z-index: 999;
-  background-color: rgba(68, 68, 68,0.8);
+  background-color: rgba(68, 68, 68, 0.8);
   text-align: center;
 }
+
 /* pages/cssbook/book.wxss */
+
 .myswiper {
   height: 80%;
   z-index: 0;
@@ -211,7 +213,7 @@
 
 .placeholder-class {
   color: grey;
-  font-size:12px; 
+  font-size: 12px;
   text-align: center;
 }
 
@@ -283,12 +285,13 @@
   font-size: 12px;
 }
 
-
 /*搜索面板  */
-.search-input{
+
+.search-input {
   height: 50px;
 }
-.search-input .searchinputView{
+
+.search-input .searchinputView {
   background: white;
   border-radius: 5px;
   margin: 10px;
@@ -297,11 +300,13 @@
   padding: 0px 5px;
 }
 
-.search-input input{
+.search-input input {
   width: 90%;
   float: left;
 }
+
 /*不能對button 設置position：absolute 導致無法觸發表單提交事件  */
+
 .search-input button {
   width: 20px;
   height: 20px;
@@ -311,14 +316,32 @@
   z-index: 1;
   border: 0px;
 }
+
 .search-input image {
   float: right;
   width: 15px;
   height: 20px;
 }
-.search-result{
-  background: rgba(240, 240, 240,0.1);
+
+.search-result {
+  background: rgba(240, 240, 240, 0.1);
   font-size: 12px;
   line-height: 22px;
-   padding-left: 15px;
+  padding-left: 15px;
+}
+
+.contents-item {
+  animation: changeBgColor 3s;
+  /*動畫持續3s后，自動消失； 如果最終想顏色不消失；
+  則當前class的背景色不能注釋掉 background: rgba(103, 165, 213, 0.5);  */
+}
+
+@keyframes changeBgColor {
+  from {
+    background: none;
+  }
+
+  to {
+    background: rgba(103, 165, 213, 0.5);
+  }
 }

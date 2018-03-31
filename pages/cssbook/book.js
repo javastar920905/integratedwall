@@ -6,7 +6,7 @@ const iconPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/ico
 const imgSuffix = ".jpg";
 
 // 模拟所有图片队列
-const innerImgs = [1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
+const innerImgs = [ 1,2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
   , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
   , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
   , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
@@ -18,7 +18,15 @@ var keywords = [
   { keyword: '大理石墻板', start: 0, end: 15 },
   { keyword: '大理石1', start: 16, end: 20 },
   { keyword: '山水系列', start: 21, end: 40 },
-  { keyword: '自然景觀', start: 41, end: 70 }
+  { keyword: '自然景觀', start: 41, end: 70 },
+  { keyword: '自然景觀', start: 41, end: 70 },
+   { keyword: '自然景觀', start: 41, end: 70 },
+    { keyword: '自然景觀', start: 41, end: 70 },
+    { keyword: '自然景觀', start: 41, end: 70 },
+    { keyword: '自然景觀', start: 41, end: 70 },
+    { keyword: '自然景觀', start: 41, end: 70 },
+    { keyword: '自然景觀', start: 41, end: 70 },
+    { keyword: '自然景觀', start: 41, end: 70 }
 ];
 var selectedKeywords = [];
 
@@ -30,6 +38,7 @@ const maxSize = innerImgs.length;
 const lazyImgs = new Array(maxSize);
 //自动播放定时器
 var timer = '';
+var moveSize=10;
 
 Page({
   data: {
@@ -40,6 +49,7 @@ Page({
     unreadImgs: unreadImgs,
     readIdx: 0,
     total: (innerImgs.length - 1),
+    keywords: keywords,
     imgPrefix: imgPrefix,
     imgSuffix: imgSuffix,
     iconPrefix: iconPrefix,
@@ -47,12 +57,14 @@ Page({
     clientWidth: '',
     autoPlay: false,
     scale: false,
+    scaleVal:1,
     showJumpPageTab: false,
     inputVal: '',
     showNav: false,
     hiddenAllImgTab: true,
     hiddenCatagoryTab: true,
-    cataOrSearch: 'search'
+    cataOrSearch: 'search',
+    searchInputVal:''
   },
   //handletouchtart+handletouchmove 判断左滑右滑
   handletouchtart: function (e) {
@@ -62,10 +74,10 @@ Page({
   handletouchend: function (e) {
     //获取滑动距离（误差值2 是避免点击时，触发滑动效果）
     var move = (app.globalData.touch.lastX - e.changedTouches[0].pageX)
-    if (move > 2) {
+    if (move > moveSize) {
       //左滑翻书，
       this.turnPageNext();
-    } else if (move < -2) {
+    } else if (move < -moveSize) {
       this.turnPagePreview();
     }
   },
@@ -212,7 +224,8 @@ Page({
     this.setData({
       hiddenCatagoryTab: this.data.hiddenCatagoryTab ? false : true,
       cataOrSearch: 'search',
-      selectedKeywords: []//清除搜索歷史
+      selectedKeywords: [],//清除搜索歷史
+      searchInputVal:''
     })
   },
   handleJump: function () {
@@ -234,13 +247,9 @@ Page({
     });
   },
   handleScale: function () {
-    if (this.data.scale) {
-      //todo 隐藏可拖动容器
-    } else {
-      console.log("todo 放大，把图片显示在一个可拖动容器上")
-    }
     this.setData({
-      scale: this.data.scale ? false : true
+      scale: this.data.scale ? false : true,
+      scaleVal:this.data.scaleVal==1?1.5:1
     });
   },
   onLoad: function () {
@@ -263,5 +272,4 @@ Page({
       }
     });
   }
-
 })
