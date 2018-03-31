@@ -2,88 +2,142 @@
 <view style="background:url({{imgPrefix}}backGroundImgURL.jpg)">
   <!--顶部可伸缩 帮助导航  -->
   <view class='headTop'>
-    <view class='headTop-child {{headTopAnimate}}'>
-      <view class='headTop-Item' hover-class='buttomTabItem-active'>
-        <image style=' width: 25px;height: 25px' src="{{iconPrefix}}search.png" />
+    <view class="headTop-child {{showNav?'slideDown':'slideUp'}}">
+      <view class='headTop-Item' hover-class='buttomTabItem-active' bindtap='handleSearchTab'>
+        <image style='width:25px;height:25px;margin:5px 3px 0px 0px;' src="{{iconPrefix}}search.png" />
       </view>
     </view>
   </view>
   <!--中间主体翻书效果图册  -->
-  <view class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-60+'px':'auto'}}">
-    <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handletap'>
+  <view class="myswiper pre-3d" style="height: {{clientHeight?clientHeight-80+'px':'auto'}}">
+    <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handleShowNav'>
       <block wx:for="{{unreadImgs}}" wx:key="img2">
-        <image src="{{(index>readIdx+2||item.img=='')?'':imgPrefix+item.img+imgSuffix}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
+        <image src="{{index>readIdx+2?'':imgPrefix+item.img+imgSuffix}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
       </block>
     </view>
 
     <!--底部跳页控件  -->
-  <view class='jumpPageTab'>
-    <view class="jumpPageTab-child {{showJumpPageTab?'jumpPageTab-slideUp':'jumpPageTab-slideDown'}}">
-      <view class='buttomTabItem'>
-        <text style='color:white;font-size:12px;' bindtap='jumpPageFirst'>首页</text>
-      </view>
-      <view class='buttomTabItem'>
-        <text style='color:white;font-size:12px;' bindtap='turnPagePreview'>上页</text>
-      </view>
-      <view class='buttomTabItem'>
-        <text style='color:white;font-size:12px;'>。。。</text>
-      </view>
-      <view class='buttomTabItem'>
-        <text style='color:white;font-size:12px;'>-></text>
-      </view>
-      <view class='buttomTabItem'>
-        <text style='color:white;font-size:12px;' bindtap='turnPageNext'>下页</text>
-      </view>
-      <view class='buttomTabItem'>
-        <text style='color:white;font-size:12px;' bindtap='jumpPageLast'>尾页</text>
+    <view class='jumpPageTab'>
+      <view class="jumpPageTab-child {{showJumpPageTab?'jumpPageTab-slideUp':'jumpPageTab-slideDown'}}">
+        <view class='jumpPageTab-item-parent'>
+          <form bindsubmit="formSubmit" bindreset="formReset">
+            <view class='jumpPageTab-item' bindtap='jumpPageFirst'>
+              <image class='buttomImage' src='/icons/first.png' />
+            </view>
+            <view class='jumpPageTab-item' bindtap='turnPagePreview'>
+              <image class='buttomImage' src='/icons/preview.png' />
+            </view>
+            <view class='inputView'>
+              <input name="page" type='number' value='{{inputVal}}' placeholder="{{(readIdx+1)}}/{{total+1}}" placeholder-class="placeholder-class" />
+              <button form-type='submit' plain='true'>
+                <image src='/icons/enter.png' />
+              </button>
+            </view>
+            <view class='jumpPageTab-item' bindtap='turnPageNext'>
+              <image class='buttomImage' src='/icons/next.png' />
+            </view>
+            <view class='jumpPageTab-item' bindtap='jumpPageLast'>
+              <image class='buttomImage' src='/icons/last.png' />
+            </view>
+          </form>
+        </view>
       </view>
     </view>
-  </view>
 
-    <!-- 展示所有背景墙图片wx-if="{{isShowAllImages}}"   -->
-    <view wx-if="{{isShowAllImages}}" class='showAllImages'>
+    <!-- 展示所有背景墙图片tab遮罩 -->
+    <view hidden="{{hiddenAllImgTab}}" class="showAllImages {{hiddenCatagoryTab?'':'allImgTab-slideRight'}}">
       <view class="section">
         <scroll-view scroll-y style="height:{{clientHeight?clientHeight-60+'px':'auto'}}" bindscroll="handlescroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
           <view id="scroll-view1" class="scroll-view-item">
             <view wx:for="{{lazyImgs}}" wx:key="img" class="scroll-view-img-box" style="width:{{(clientWidth-70)/3+'px'}};height:{{(clientHeight-60)/4+'px'}}">
               <image src="{{item==null?'':imgPrefix+item+imgSuffix}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}" />
-              <image src="loading.gif" class="img-loading" hidden="{{item==null?false:'true'}}" />
+              <image src="loading.gif" class="img-loading" hidden="{{item==null?false:true}}" />
               <text> {{index+1}} </text>
             </view>
           </view>
         </scroll-view>
       </view>
     </view>
+
   </view>
 
   <!--底部导航  -->
   <view class='bottomTab'>
-    <view class='bottomTab-child {{bottomAnimate}}'>
-      <view class='buttomTabItem' hover-class='buttomTabItem-active' bindtap="showAllImage">
-        <image class='buttomImage' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAWklEQVRIS2NkoBFgpJG5DPQx+MyZM/9x+cDExATsCGLUgNShuBikCWYAsgXI4sSoGTUYJRjpF8Y0SRXUzCyjGQQeAvRLFaNZGpyEiSkSiVGDUboNvQxCTRcDAF8swBeCta3+AAAAAElFTkSuQmCC '
-        />
+    <view class="bottomTab-child {{showNav?'bottomSlideUp':'bottomSlideDown'}}">
+      <view class='buttomTabItem' hover-class='buttomTabItem-active' bindtap="handleShowAllImg">
+        <image class='buttomImage' src='/icons/menu.png' />
       </view>
-      <view class='buttomTabItem' hover-class='buttomTabItem-active'>
-        <image class='buttomImage' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAATklEQVRIS2NkoBFgpJG5DMPA4DNnzvyHBY+JiQkjMp9QsIHUw9RgBAXIIJiByAoJGYouj9VgmriYVJfhUj+aKkZTBWbaGE0Vo6liOKQKANZ4SBcS9xvdAAAAAElFTkSuQmCC ' />
+      <view class='buttomTabItem' hover-class='buttomTabItem-active' bindtap='handleCatagoryTab'>
+        <image class='buttomImage' src='/icons/list.png' />
       </view>
-      <view class='buttomTabItem' hover-class='buttomTabItem-active'>
-        <text style='color:white;font-size:12px;' bindtap='showJumpPageTab'>跳页</text>
+      <view class='buttomTabItem' bindtap='handlePlay' hover-class='buttomTabItem-active'>
+        <image class='buttomImage' src="/icons/{{autoPlay?'stop':'play'}}.png" />
       </view>
-      <view class='buttomTabItem' hover-class='buttomTabItem-active'>
-        <text style='color:white;font-size:12px;' hidden="{{scale}}" bindtap='startScale'>放大</text>
-        <text style='color:white;font-size:12px;' hidden="{{!scale}}" bindtap='stopScale'>缩小</text>
+      <view class='buttomTabItem' bindtap='handleScale' hover-class='buttomTabItem-active'>
+        <image class='buttomImage' src="/icons/{{scale?'small':'big'}}.png" />
       </view>
-      <view class='buttomTabItem' hover-class='buttomTabItem-active'>
-        <!-- <image class='buttomImage' src="{{iconPrefix}}search.png" /> -->
-        <text style='color:white;font-size:12px;' hidden="{{autoPlay}}" bindtap='startPlay'>播放</text>
-        <text style='color:white;font-size:12px;' hidden="{{!autoPlay}}" bindtap='stopPlay'>停止</text>
-      </view>
-      <view class='buttomTabItem' hover-class='buttomTabItem-active'>
-        <image class='buttomImage' src="{{iconPrefix}}search.png" />
+      <view class='buttomTabItem' bindtap='handleJump' hover-class='buttomTabItem-active'>
+        <image class='buttomImage' src='/icons/switch2.png' />
       </view>
     </view>
   </view>
 
-  
+</view>
 
+
+
+
+
+
+<!-- 展示照片分类目录遮罩tab -->
+<view class="cata-tab {{hiddenCatagoryTab?'cata-tab-slideLeft':'cata-tab-slideRight'}}">
+  <!-- <view class="cata-tab cata-tab-slideRight"> -->
+  <!--顯示目錄  -->
+  <view class="cata-section" hidden="{{cataOrSearch!='cata'?true:false}}">
+    <view class='cata-title'>
+      <text>目錄</text>
+      <text bindtap='handleCatagoryTab' style='float:right;width:25px'>x</text>
+    </view>
+    <scroll-view scroll-y style="height:{{clientHeight+'px'}}">
+      <view id="scroll-view2">
+        <view wx:for="{{lazyImgs}}" wx:key="cata">
+          <view class='cata-item' hover-class='buttomTabItem-active' bindtap='handleLazyImgTap' data-index="{{index}}">
+            <text class='cata-item'> 页 {{index+1}} </text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!--顯示搜索  -->
+  <view class="search-section" hidden="{{cataOrSearch!='search'?true:false}}">
+    <view class='cata-title'>
+      <text>搜索</text>
+      <text bindtap='handleCatagoryTab' style='float:right;width:25px'>x</text>
+    </view>
+    <view class='search-input'>
+      <view class='searchinputView'>
+        <form id='searchform' bindsubmit='searchFormSubmit' bindreset="searchFormReset">
+          <input name="searchKeyWord" type='text' placeholder="分類信息，如:大理石" placeholder-class="placeholder-class" />
+          <button form-type='submit' plain='true'>
+            <image src='/icons/enter.png' />
+          </button>
+        </form>
+      </view>
+      <view class='search-result'>
+        <text class=''>頁數： <text style='color:orange'>{{selectedKeywords.length}}</text></text>
+      </view>
+    </view>
+
+    <scroll-view scroll-y style="height:{{(clientHeight-100)+'px'}}">
+      <view id="scroll-view3">
+        <view wx:for="{{selectedKeywords}}" wx:key="searchKey">
+          <view class='cata-item' hover-class='buttomTabItem-active' bindtap='handleLazyImgTap' data-index="{{item.page}}">
+            <text class='cata-item'> 页 {{item.page+1}} <text style='color:orange;margin-left:10px;'> {{item.keyword}} </text></text>
+
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
 </view>

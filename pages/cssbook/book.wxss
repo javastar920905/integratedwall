@@ -39,8 +39,9 @@
 }
 
 /**头部和底部导航设置**/
+
 .headTop {
-  height: 30px;
+  height: 40px;
   line-height: 30px;
   perspective: 5000px;
 }
@@ -61,31 +62,33 @@
 }
 
 .bottomTab {
-  height: 30px;
+  height: 40px;
   overflow: hidden;
 }
-.bottomTab-child{
-   height: 30px;
-   padding: 0px 15px;
-   background-color: rgb(68, 68, 68);
+
+.bottomTab-child {
+  height: 100%;
+  padding: 0px 15px;
+  background-color: rgb(68, 68, 68);
 }
 
 .buttomTabItem {
   width: 26px;
   border-radius: 3px;
-  margin: 1px 8px;
-  padding: 2px;
+  margin: 0px 8px;
+  padding: 8px;
   float: left;
 }
-.buttomTabItem-active{
-  background: rgba(103, 165, 213,0.5);
+
+.buttomTabItem-active {
+  background: rgba(103, 165, 213, 0.5);
 }
+
 .buttomImage {
   width: 25px;
   height: 25px;
   margin-right: 20px;
 }
-
 
 .slideDown {
   transform: translateY(0px);
@@ -93,81 +96,219 @@
 }
 
 .slideUp {
-  transform: translateY(-30px);
+  transform: translateY(-40px);
   transition: 500ms linear;
 }
-.bottomSlideDown{
-  transform: translateY(30px);
+
+.bottomSlideDown {
+  transform: translateY(40px);
   transition: 500ms linear;
 }
-.bottomSlideUp{
+
+.bottomSlideUp {
   transform: translateY(0px);
   transition: 500ms linear;
 }
- 
- /*点击底部按钮，显示全部图片  */
- .showAllImages{
- position:absolute;
- top: 0px;
- left: 0px;
- bottom: 0px;
- width: 100%;
- z-index: 999;
-background-color: rgba(68, 68, 68,0.8);
-} 
-.scroll-view-item{
-  height: 100%;
-  padding:0px 20px ;
+
+/*点击底部按钮，显示全部图片  */
+
+.showAllImages {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  z-index: 999;
+  background-color: rgba(68, 68, 68, 0.6);
 }
-.scroll-view-img-box{
+
+.allImgTab-slideRight {
+  transform: translateX(90%);
+  transition: 500ms linear;
+}
+
+.scroll-view-item {
+  height: 100%;
+  padding: 0px 20px;
+}
+
+.scroll-view-img-box {
   position: relative;
   margin: 8px 5px;
   float: left;
   text-align: center;
   color: whitesmoke;
-  font-size:9px;
+  font-size: 9px;
   background: whitesmoke;
 }
-.scroll-view-img{
+
+.scroll-view-img {
   width: 100%;
   height: 100%;
 }
-.scroll-view-img-active{
-  border: 2px solid salmon ;
+
+.scroll-view-img-active {
+  border: 2px solid salmon;
   border-radius: 2px;
 }
-.img-loading{
-  width:32px;height:32px;position: absolute; left:30%; top: 35%;
+
+.img-loading {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 30%;
+  top: 35%;
 }
 
-
 /*底部跳页控件  */
+
 .jumpPageTab {
-  height: 35px;
+  height: 45px;
   width: 100%;
   overflow: hidden;
   position: absolute;
   z-index: 998;
   bottom: 0px;
 }
-.jumpPageTab-child{
-   height: 35px;
-   padding: 0px 15px;
-   background-color: rgba(68, 68, 68,0.5);
-}
-.jumpPageTab .buttomTabItem{
-   width: 26px;
-  border-radius: 3px;
-  margin: 1px 8px;
-  padding: 2px;
-  float: left;
+
+.jumpPageTab-child {
+  height: 100%;
+  padding: 0px 15px;
+  background-color: rgba(68, 68, 68, 0.5);
 }
 
-.jumpPageTab-slideDown{
-  transform: translateY(35px);
+.jumpPageTab-item-parent {
+  width: 90%;
+  height: 100%;
+  margin: 0px auto;
+  text-align: center;
+}
+
+.inputView {
+  width: 45%;
+  padding: 2px 0px 1px 0px;
+  margin-top: 8px;
+  float: left;
+  background: rgb(240, 240, 240);
+  border: 1px rgba(240, 240, 240, 0.1) solid;
+}
+
+.inputView input {
+  float: left;
+  width: 75px;
+  padding: 0px 5px;
+}
+
+.placeholder-class {
+  color: grey;
+  font-size:12px; 
+  text-align: center;
+}
+
+.inputView button {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+  margin: 0px;
+  float: right;
+  border: 0px;
+}
+
+.inputView image {
+  float: right;
+  width: 15px;
+  height: 20px;
+}
+
+.jumpPageTab-item {
+  width: 10%;
+  height: 25px;
+  margin: 8px 2px;
+  float: left;
+  border: 1px rgba(240, 240, 240, 0.2) solid;
+}
+
+.jumpPageTab-slideDown {
+  transform: translateY(45px);
   transition: 500ms linear;
 }
-.jumpPageTab-slideUp{
+
+.jumpPageTab-slideUp {
   transform: translateY(0px);
   transition: 500ms linear;
+}
+
+/*分类目录  */
+
+.cata-tab {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: 90%;
+  z-index: 999;
+  background-color: rgb(68, 68, 68);
+  color: whitesmoke;
+}
+
+.cata-tab-slideLeft {
+  transform: translateX(-100%);
+  transition: 500ms linear;
+}
+
+.cata-tab-slideRight {
+  transform: translateX(0px);
+  transition: 500ms linear;
+}
+
+.cata-title {
+  font-size: 14px;
+  padding: 4px 0px 0px 15px;
+  font-weight: bold;
+}
+
+.cata-item {
+  padding-left: 10px;
+  line-height: 40px;
+  font-size: 12px;
+}
+
+
+/*搜索面板  */
+.search-input{
+  height: 50px;
+}
+.search-input .searchinputView{
+  background: white;
+  border-radius: 5px;
+  margin: 10px;
+  height: 25px;
+  color: black;
+  padding: 0px 5px;
+}
+
+.search-input input{
+  width: 90%;
+  float: left;
+}
+/*不能對button 設置position：absolute 導致無法觸發表單提交事件  */
+.search-input button {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+  margin: 0px;
+  float: right;
+  z-index: 1;
+  border: 0px;
+}
+.search-input image {
+  float: right;
+  width: 15px;
+  height: 20px;
+}
+.search-result{
+  background: rgba(240, 240, 240,0.1);
+  font-size: 12px;
+  line-height: 22px;
+   padding-left: 15px;
 }
