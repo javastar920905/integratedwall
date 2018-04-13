@@ -6,7 +6,7 @@ const iconPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/ico
 const imgSuffix = ".jpg";
 
 // 模拟所有图片队列
-const innerImgs = [ 1,2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
+const innerImgs = [1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
   , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
   , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
   , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
@@ -20,13 +20,13 @@ var keywords = [
   { keyword: '山水系列', start: 21, end: 40 },
   { keyword: '自然景觀', start: 41, end: 70 },
   { keyword: '自然景觀', start: 41, end: 70 },
-   { keyword: '自然景觀', start: 41, end: 70 },
-    { keyword: '自然景觀', start: 41, end: 70 },
-    { keyword: '自然景觀', start: 41, end: 70 },
-    { keyword: '自然景觀', start: 41, end: 70 },
-    { keyword: '自然景觀', start: 41, end: 70 },
-    { keyword: '自然景觀', start: 41, end: 70 },
-    { keyword: '自然景觀', start: 41, end: 70 }
+  { keyword: '自然景觀', start: 41, end: 70 },
+  { keyword: '自然景觀', start: 41, end: 70 },
+  { keyword: '自然景觀', start: 41, end: 70 },
+  { keyword: '自然景觀', start: 41, end: 70 },
+  { keyword: '自然景觀', start: 41, end: 70 },
+  { keyword: '自然景觀', start: 41, end: 70 },
+  { keyword: '自然景觀', start: 41, end: 70 }
 ];
 var selectedKeywords = [];
 
@@ -38,11 +38,11 @@ const maxSize = innerImgs.length;
 const lazyImgs = new Array(maxSize);
 //自动播放定时器
 var timer = '';
-var moveSize=10;
+var moveSize = 10;
 
 Page({
   data: {
-    hideLoading:false,
+    hideLoading: false,
     lazyImgs: lazyImgs,
     loadedImgStart: 0,
     loadedImgEnd: lazySize,
@@ -57,14 +57,14 @@ Page({
     clientWidth: '',
     autoPlay: false,
     scale: false,
-    scaleVal:1,
+    scaleVal: 1,
     showJumpPageTab: false,
     inputVal: '',
     showNav: false,
     hiddenAllImgTab: true,
     hiddenCatagoryTab: true,
     cataOrSearch: 'search',
-    searchInputVal:''
+    searchInputVal: ''
   },
   //handletouchtart+handletouchmove 判断左滑右滑
   handletouchtart: function (e) {
@@ -117,40 +117,43 @@ Page({
   // 跳页控制--开始
   turnPagePreview: function () {
     //回到首页，不再触发滑动
-    if (this.data.readIdx >= 1) {
-      unreadImgs[this.data.readIdx - 1].y = 0;
+    let index = this.data.readIdx;
+    if (index >= 1) {
+      unreadImgs[index - 1].y = 0;
       this.setData({
         unreadImgs: unreadImgs,
-        readIdx: this.data.readIdx - 1,
+        readIdx: index - 1,
         inputVal: ''
       });
     }
   },
   turnPageNext: function () {
     //实时改变unreadImgs的元素属性，实现类似js操作dom的效果
-    if (this.data.readIdx <= unreadImgs.length - 2) {
-      unreadImgs[this.data.readIdx].y = -90;
-      unreadImgs[this.data.readIdx].zidx = unreadImgs.length - this.data.readIdx;
+    let index = this.data.readIdx;
+    if (index <= unreadImgs.length - 2) {
+      unreadImgs[index].y = -90;
+      unreadImgs[index].zidx = unreadImgs.length - index;
       //调用setData()方法触发页面重新渲染
       this.setData({
         unreadImgs: unreadImgs,
-        readIdx: (this.data.readIdx += 1),
+        readIdx: (index += 1),
         inputVal: ''
       });
     }
   },
   jumpPage: function (checkedIdx) {
     //改变队列中，选中元素下表以前的属性状态
-    if (checkedIdx > this.data.readIdx) {
+    let index = this.data.readIdx;
+    if (checkedIdx > index) {
       //往左侧翻书
-      for (; this.data.readIdx < checkedIdx; this.data.readIdx++) {
-        unreadImgs[this.data.readIdx].y = -90;
-        unreadImgs[this.data.readIdx].zidx = unreadImgs.length - this.data.readIdx;
+      for (; index < checkedIdx; index++) {
+        unreadImgs[index].y = -90;
+        unreadImgs[index].zidx = unreadImgs.length - index;
       }
     } else {
       //往右侧翻书
-      for (; this.data.readIdx > checkedIdx; this.data.readIdx--) {
-        unreadImgs[this.data.readIdx - 1].y = 0;
+      for (; index > checkedIdx; index--) {
+        unreadImgs[index - 1].y = 0;
       }
     }
     //重新渲染页面，關閉所有蒙版tab,清除搜索結果
@@ -225,7 +228,7 @@ Page({
       hiddenCatagoryTab: this.data.hiddenCatagoryTab ? false : true,
       cataOrSearch: 'search',
       selectedKeywords: [],//清除搜索歷史
-      searchInputVal:''
+      searchInputVal: ''
     })
   },
   handleJump: function () {
@@ -249,7 +252,7 @@ Page({
   handleScale: function () {
     this.setData({
       scale: this.data.scale ? false : true,
-      scaleVal:this.data.scaleVal==1?1.5:1
+      scaleVal: this.data.scaleVal == 1 ? 1.5 : 1
     });
   },
   onLoad: function () {
@@ -257,7 +260,7 @@ Page({
     //初始化未读照片队列
     var allImgSize = innerImgs.length;
     for (var idx = 0; idx < allImgSize; idx++) {
-      var img = { img: innerImgs[idx], y: 0, zidx: allImgSize - idx };
+      var img = { img: imgPrefix + innerImgs[idx] + imgSuffix, y: 0, zidx: allImgSize - idx };
       unreadImgs.push(img);
     }
 
@@ -267,7 +270,7 @@ Page({
           clientHeight: res.windowHeight,
           clientWidth: res.windowWidth,
           unreadImgs: unreadImgs,
-          hideLoading:true
+          hideLoading: true
         })
       }
     });

@@ -207,7 +207,7 @@
 
 .inputView input {
   float: left;
-  width: 75px;
+  width: 70%;
   padding: 0px 5px;
 }
 
