@@ -1,8 +1,7 @@
-<!--
-loading...
+
  <view class="loading" hidden='{{hideLoading}}'>
   <image src='/loading.gif' style='position:absolute;margin-top:{{clientHeight/2-8}}px; margin-left:-30px;  width:60px;height:16px;'></image>
-</view> -->
+</view> 
 <!--背景图-->
 <view style="background:url({{imgPrefix}}backGroundImgURL.jpg)">
   <!--顶部可伸缩 帮助导航  -->
@@ -66,7 +65,7 @@ loading...
         <scroll-view scroll-y style="height:{{clientHeight?clientHeight-60+'px':'auto'}}" bindscroll="handlescroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
           <view id="scroll-view1" class="scroll-view-item">
             <view wx:for="{{lazyImgs}}" wx:key="img" class="scroll-view-img-box" style="width:{{(clientWidth-70)/3+'px'}};height:{{(clientHeight-60)/4+'px'}}">
-              <image src="{{item==null?'':imgPrefix+item+imgSuffix}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}" />
+              <image src="{{item==null?'':item}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}" />
               <image src="loading.gif" class="img-loading" hidden="{{item==null?false:true}}" />
               <text> {{index+1}} </text>
             </view>

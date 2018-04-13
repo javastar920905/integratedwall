@@ -99,7 +99,8 @@ Page({
     if (bufferImgs.length > 0) {
       for (var i = 0; i < bufferImgs.length; i++) {
         if (bufferImgs[i] != null) {
-          lazyImgs.splice(this.data.loadedImgStart, 1, bufferImgs[i]);
+          var img = imgPrefix + bufferImgs[i]+imgSuffix
+          lazyImgs.splice(this.data.loadedImgStart, 1, img);
           this.data.loadedImgStart++;
         } else {
           break;
@@ -269,8 +270,11 @@ Page({
         that.setData({
           clientHeight: res.windowHeight,
           clientWidth: res.windowWidth,
-          unreadImgs: unreadImgs,
-          hideLoading: true
+          unreadImgs: unreadImgs
+        },function(){
+          that.setData({
+            hideLoading:true
+          })
         })
       }
     });
