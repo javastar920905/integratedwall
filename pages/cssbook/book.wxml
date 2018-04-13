@@ -1,7 +1,6 @@
-
- <view class="loading" hidden='{{hideLoading}}'>
+<view class="loading" hidden='{{hideLoading}}'>
   <image src='/loading.gif' style='position:absolute;margin-top:{{clientHeight/2-8}}px; margin-left:-30px;  width:60px;height:16px;'></image>
-</view> 
+</view>
 <!--背景图-->
 <view style="background:url({{imgPrefix}}backGroundImgURL.jpg)">
   <!--顶部可伸缩 帮助导航  -->
@@ -62,7 +61,7 @@
     <!-- 展示所有背景墙图片tab遮罩 -->
     <view hidden="{{hiddenAllImgTab}}" class="showAllImages {{hiddenCatagoryTab?'':'allImgTab-slideRight'}}">
       <view class="section">
-        <scroll-view scroll-y style="height:{{clientHeight?clientHeight-60+'px':'auto'}}" bindscroll="handlescroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+        <scroll-view scroll-y style="height:{{clientHeight-80+'px'}}" bindscroll="handlescroll" scroll-with-animation="{{true}}">
           <view id="scroll-view1" class="scroll-view-item">
             <view wx:for="{{lazyImgs}}" wx:key="img" class="scroll-view-img-box" style="width:{{(clientWidth-70)/3+'px'}};height:{{(clientHeight-60)/4+'px'}}">
               <image src="{{item==null?'':item}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}" />
@@ -117,7 +116,7 @@
       <text>目錄</text>
       <text bindtap='handleCatagoryTab' style='float:right;width:25px'>x</text>
     </view>
-    <scroll-view scroll-y style="height:{{clientHeight+'px'}}">
+    <scroll-view scroll-y style="height:{{clientHeight-30+'px'}}">
       <view id="scroll-view2">
         <view wx:for="{{lazyImgs}}" wx:key="cata">
           <view class='cata-item' hover-class='buttomTabItem-active' bindtap='handleLazyImgTap' data-index="{{index}}">
@@ -148,7 +147,7 @@
       </view>
     </view>
 
-    <scroll-view scroll-y style="height:{{(clientHeight-100)+'px'}}">
+    <scroll-view scroll-y style="height:{{(clientHeight-85)+'px'}}">
       <view id="scroll-view3">
         <view wx:for="{{selectedKeywords}}" wx:key="searchKey">
           <view class='cata-item' hover-class='buttomTabItem-active' bindtap='handleLazyImgTap' data-index="{{item.page}}">
