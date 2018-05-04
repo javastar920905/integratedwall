@@ -106,8 +106,8 @@ Page({
           break;
         }
       }
-      //每次滚动加载3张图
-      this.data.loadedImgEnd = this.data.loadedImgEnd + 6;
+      //每次滚动加载9张图
+      this.data.loadedImgEnd = this.data.loadedImgEnd + 9;
       //  console.log(lazyImgs);
       this.setData({
         lazyImgs: lazyImgs

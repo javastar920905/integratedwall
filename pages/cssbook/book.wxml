@@ -66,7 +66,7 @@
         <scroll-view scroll-y style="height:{{clientHeight-80+'px'}}" bindscroll="handlescroll" scroll-with-animation="{{true}}">
           <view id="scroll-view1" class="scroll-view-item">
             <view wx:for="{{lazyImgs}}" wx:key="img" class="scroll-view-img-box" style="width:{{(clientWidth-70)/3+'px'}};height:{{(clientHeight-60)/4+'px'}}">
-              <image src="{{item==null?'':item}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}" />
+              <image src="{{item==null?'':item}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}"  mode="aspectFill" />
               <image src="loading.gif" class="img-loading" hidden="{{item==null?false:true}}" />
               <text> {{index+1}} </text>
             </view>
