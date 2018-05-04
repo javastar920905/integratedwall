@@ -6,29 +6,31 @@
   <!--顶部可伸缩 帮助导航  -->
   <view class='headTop'>
     <view class="headTop-child {{showNav?'slideDown':'slideUp'}}">
-      <!-- <view class='headTop-Item' hover-class='buttomTabItem-active' bindtap='handleSearchTab'>
+      <view class='headTop-Item' hover-class='buttomTabItem-active' bindtap='handleSearchTab'>
         <image style='width:25px;height:25px;margin:5px 3px 0px 0px;' src="{{iconPrefix}}search.png" />
-      </view> -->
+      </view>
     </view>
   </view>
 
 
   <!--中间主体翻书效果图册  -->
   <view class="myswiper pre-3d" style="height:{{clientHeight?clientHeight-80+'px':'auto'}};">
-    <view bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handleShowNav'>
-      <!-- <movable-area style="height: {{clientHeight-80+'px'}};width:{{clientWidth}}px" scale-area>
-        <movable-view style="height: {{clientHeight-80+'px'}};width:{{clientWidth}}px" direction="all" scale scale-min="1" scale-max="4" scale-value="{{scaleVal}}"> -->
+    <view hidden="{{!hiddenScaleView}}" bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handleShowNav'>
       <block wx:for="{{unreadImgs}}" wx:key="img2">
-        <image src="{{index>readIdx+2?'':item.img}}" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
+        <image src="{{index>readIdx+2?'':item.img}}" mode="aspectFill" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
       </block>
       <block wx:for="{{keywords}}" wx:key="keycata">
         <view hidden='{{readIdx==1?false:true}}' class='contents-item' style='position:absolute;left:22%;bottom:{{((clientHeight-80)/18.5)*index+(clientHeight-80)/18.5*2}}px;width:55%;height:21px;z-index:999;' bindtap='handleLazyImgTap' data-index="{{item.start}}"
           hover-class='buttomTabItem-active'></view>
       </block>
-
-      <!-- </movable-view>
-      </movable-area> -->
     </view>
+
+    <movable-area  style="height: {{clientHeight-80}}px;width:{{clientWidth+200}}px" scale-area hidden="{{hiddenScaleView}}">
+      <movable-view style="height: {{clientHeight-80}}px;width:{{clientHeight-80}}px" direction="all"  scale-min="1" scale-max="5" scale-value="{{scaleVal}}" inertia="{{true}}" damping="1000" friction="20"  scale="{{true}}" >
+          <image src="{{caleImgSrc}}" style="width:100%;height:100%" mode="aspectFit"/>
+      </movable-view>
+    </movable-area>
+
 
     <!--底部跳页控件  -->
     <view class='jumpPageTab'>
@@ -88,15 +90,15 @@
       <view class='buttomTabItem' bindtap='handlePlay' hover-class='buttomTabItem-active'>
         <image class='buttomImage' src="/icons/{{autoPlay?'stop':'play'}}.png" />
       </view>
-      <!-- <view class='buttomTabItem' bindtap='handleScale' hover-class='buttomTabItem-active'>
+      <view class='buttomTabItem' bindtap='handleScale' hover-class='buttomTabItem-active'>
         <image class='buttomImage' src="/icons/{{scale?'small':'big'}}.png" />
-      </view> -->
+      </view>
       <view class='buttomTabItem' bindtap='handleJump' hover-class='buttomTabItem-active'>
         <image class='buttomImage' src='/icons/switch2.png' />
       </view>
-      <view class='buttomTabItem' bindtap='handleSearchTab' hover-class='buttomTabItem-active'>
+      <!-- <view class='buttomTabItem' bindtap='handleSearchTab' hover-class='buttomTabItem-active'>
         <image class='buttomImage' src="{{iconPrefix}}search.png" />
-      </view>
+      </view> -->
     </view>
   </view>
 

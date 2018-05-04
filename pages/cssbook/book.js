@@ -6,14 +6,10 @@ const iconPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/ico
 const imgSuffix = ".jpg";
 
 // 模拟所有图片队列
-const innerImgs = [1, 2, 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
-  , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
-  , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
-  , 3, 4, 50, 51, 101, 102, 152, 201, 202, 251, 252, 302, 352, 353, 387, 453, 454
-];
+const innerImgs = [];//['1', '2'];
 /**未读图片队列數據結構 {img:图片名,y:當前y軸角度,zidx: z-index(數組長度-元素下標位置）} **/
 var unreadImgs = [];
-//關鍵詞數據結構，或者redis獲取 {keyword:關鍵詞,start:開始下標,end:結束下標}
+//關鍵詞數據結構，或者redis獲取 {keyword:關鍵詞,start:開始下標,end:結束下標}       
 var keywords = [
   { keyword: '大理石墻板', start: 0, end: 15 },
   { keyword: '大理石1', start: 16, end: 20 },
@@ -33,15 +29,15 @@ var selectedKeywords = [];
 //队列 api参考文档 http://www.w3school.com.cn/jsref/jsref_splice.asp
 // 滚动一次加载数量
 const lazySize = 12;
-const maxSize = innerImgs.length;
 // 所有图片懒加载队列
-const lazyImgs = new Array(maxSize);
+var lazyImgs;
 //自动播放定时器
 var timer = '';
 var moveSize = 10;
 
 Page({
   data: {
+    maxSize:0,
     hideLoading: false,
     lazyImgs: lazyImgs,
     loadedImgStart: 0,
@@ -58,6 +54,9 @@ Page({
     autoPlay: false,
     scale: false,
     scaleVal: 1,
+    hiddenScaleView:true,
+    caleImgSrc:'',
+    maxMoveY:0,
     showJumpPageTab: false,
     inputVal: '',
     showNav: false,
@@ -82,8 +81,9 @@ Page({
     }
   },
   handlescroll: function (e) {
-    let mod = e.detail.scrollTop % 200;
-    if (mod > 100) {
+    let mod = e.detail.scrollTop % 150;
+    //console.log("mod="+mod)
+    if (mod > 90) {
       this.lazyLoadImg();
     }
   },
@@ -99,7 +99,7 @@ Page({
     if (bufferImgs.length > 0) {
       for (var i = 0; i < bufferImgs.length; i++) {
         if (bufferImgs[i] != null) {
-          var img = imgPrefix + bufferImgs[i]+imgSuffix
+          var img = imgPrefix + bufferImgs[i] + imgSuffix
           lazyImgs.splice(this.data.loadedImgStart, 1, img);
           this.data.loadedImgStart++;
         } else {
@@ -107,8 +107,7 @@ Page({
         }
       }
       //每次滚动加载3张图
-      this.data.loadedImgEnd = this.data.loadedImgEnd + 3;
-      // console.log("start"+this.data.loadedImgStart + " end " + this.data.loadedImgEnd);
+      this.data.loadedImgEnd = this.data.loadedImgEnd + 6;
       //  console.log(lazyImgs);
       this.setData({
         lazyImgs: lazyImgs
@@ -251,15 +250,43 @@ Page({
     });
   },
   handleScale: function () {
+    if (this.data.scale==false){
+      this.data.hiddenScaleView=false;
+    }else{
+      this.data.hiddenScaleView = true;
+    }
+
     this.setData({
       scale: this.data.scale ? false : true,
-      scaleVal: this.data.scaleVal == 1 ? 1.5 : 1
+      hiddenScaleView: this.data.hiddenScaleView,
+      caleImgSrc: unreadImgs[this.data.readIdx].img,
+      scaleVal:1
     });
   },
   onLoad: function () {
     var that = this;
+
+    //填充BT编号图片库
+    for (var i = 1; i <= 6; i++) {
+      innerImgs.push("BT/BT-00" + i + "A");
+      innerImgs.push("BT/BT-00" + i + "B");
+    }
+    innerImgs.push("BT/BT-007");
+    innerImgs.push("BT/BT-008");
+    innerImgs.push("BT/BT-009");
+    for (var i = 7; i <= 353; i++) {
+      if (i < 10) {
+        innerImgs.push("BT/BT-00" + i);
+      } else if (i < 100) {
+        innerImgs.push("BT/BT-0" + i);
+      } else {
+        innerImgs.push("BT/BT-" + i);
+      }
+    }
+
     //初始化未读照片队列
-    var allImgSize = innerImgs.length;
+    let allImgSize = innerImgs.length;
+    lazyImgs=new Array(allImgSize);
     for (var idx = 0; idx < allImgSize; idx++) {
       var img = { img: imgPrefix + innerImgs[idx] + imgSuffix, y: 0, zidx: allImgSize - idx };
       unreadImgs.push(img);
@@ -270,10 +297,11 @@ Page({
         that.setData({
           clientHeight: res.windowHeight,
           clientWidth: res.windowWidth,
-          unreadImgs: unreadImgs
-        },function(){
+          unreadImgs: unreadImgs,
+          maxSize: allImgSize
+        }, function () {
           that.setData({
-            hideLoading:true
+            hideLoading: true
           })
         })
       }
