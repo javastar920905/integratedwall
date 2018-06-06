@@ -2,11 +2,18 @@
   <image src='/loading.gif' style='position:absolute;margin-top:{{clientHeight/2-8}}px; margin-left:-30px;  width:60px;height:16px;'></image>
 </view>
 <!--背景图-->
-<view style="background:url({{imgPrefix}}backGroundImgURL.jpg)">
+<view style="background:url({{imgPrefix}}/books/backGroundImgURL.jpg)">
   <!--顶部可伸缩 帮助导航  -->
   <view class='headTop'>
     <view class="headTop-child {{showNav?'slideDown':'slideUp'}}">
-      <view class='headTop-Item' hover-class='buttomTabItem-active' bindtap='handleSearchTab'>
+    <!--选择图片分类,发送异步请求  -->
+     <view class='headTop-category' hover-class='buttomTabItem-active'>
+          <picker bindchange="bindPickerChange" value="{{selectedCategoryIdx}}" range="{{categoryNames}}">
+             <view class="section__title">选择分类: {{categoryNames[selectedCategoryIdx]}}</view>
+          </picker>
+      </view>
+      <!--顶部搜索框  -->
+      <view class='headTop-search' hover-class='buttomTabItem-active' bindtap='handleSearchTab'>
         <image style='width:25px;height:25px;margin:5px 3px 0px 0px;' src="{{iconPrefix}}search.png" />
       </view>
     </view>
@@ -19,12 +26,15 @@
       <block wx:for="{{unreadImgs}}" wx:key="img2">
         <image src="{{index>readIdx+2?'':item.img}}" mode="aspectFill" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
       </block>
-      <block wx:for="{{keywords}}" wx:key="keycata">
+
+      <!--目录页上的覆盖物文本  -->
+      <!-- <block wx:for="{{keywords}}" wx:key="keycata">
         <view hidden='{{readIdx==1?false:true}}' class='contents-item' style='position:absolute;left:22%;bottom:{{((clientHeight-80)/18.5)*index+(clientHeight-80)/18.5*2}}px;width:55%;height:21px;z-index:999;' bindtap='handleLazyImgTap' data-index="{{item.start}}"
           hover-class='buttomTabItem-active'></view>
-      </block>
+      </block> -->
     </view>
 
+<!--图片放大缩小区域  -->
     <movable-area  style="height: {{clientHeight-80}}px;width:{{clientWidth+200}}px" scale-area hidden="{{hiddenScaleView}}">
       <movable-view style="height: {{clientHeight-80}}px;width:{{clientHeight-80}}px" direction="all"  scale-min="1" scale-max="5" scale-value="{{scaleVal}}" inertia="{{true}}" damping="1000" friction="20"  scale="{{true}}" >
           <image src="{{caleImgSrc}}" style="width:100%;height:100%" mode="aspectFit"/>
@@ -66,9 +76,9 @@
         <scroll-view scroll-y style="height:{{clientHeight-80+'px'}}" bindscroll="handlescroll" scroll-with-animation="{{true}}">
           <view id="scroll-view1" class="scroll-view-item">
             <view wx:for="{{lazyImgs}}" wx:key="img" class="scroll-view-img-box" style="width:{{(clientWidth-70)/3+'px'}};height:{{(clientHeight-60)/4+'px'}}">
-              <image src="{{item==null?'':item}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}"  mode="aspectFill" />
+              <image src="{{item==null?'':item.img}}" class="scroll-view-img  {{readIdx==index?'scroll-view-img-active':''}}" bindtap='handleLazyImgTap' data-index="{{index}}"  mode="aspectFill" />
               <image src="loading.gif" class="img-loading" hidden="{{item==null?false:true}}" />
-              <text> {{index+1}} </text>
+              <text> {{item.no}} </text>
             </view>
           </view>
         </scroll-view>
@@ -112,24 +122,24 @@
 <!-- 展示照片分类目录遮罩tab -->
 <view class="cata-tab {{hiddenCatagoryTab?'cata-tab-slideLeft':'cata-tab-slideRight'}}">
   <!-- <view class="cata-tab cata-tab-slideRight"> -->
-  <!--顯示目錄  -->
+  <!--显示目录  -->
   <view class="cata-section" hidden="{{cataOrSearch!='cata'?true:false}}">
     <view class='cata-title'>
-      <text>目錄</text>
+      <text>目录</text>
       <text bindtap='handleCatagoryTab' style='float:right;width:25px'>x</text>
     </view>
     <scroll-view scroll-y style="height:{{clientHeight-30+'px'}}">
       <view id="scroll-view2">
-        <view wx:for="{{lazyImgs}}" wx:key="cata">
+        <view wx:for="{{unreadImgs}}" wx:key="cata">
           <view class='cata-item' hover-class='buttomTabItem-active' bindtap='handleLazyImgTap' data-index="{{index}}">
-            <text class='cata-item'> 页 {{index+1}} </text>
+            <text class='cata-item'> 页 {{item.no}} </text>
           </view>
         </view>
       </view>
     </scroll-view>
   </view>
 
-  <!--顯示搜索  -->
+  <!--显示搜索面板  -->
   <view class="search-section" hidden="{{cataOrSearch!='search'?true:false}}">
     <view class='cata-title'>
       <text>搜索</text>
@@ -138,22 +148,22 @@
     <view class='search-input'>
       <view class='searchinputView'>
         <form id='searchform' bindsubmit='searchFormSubmit' bindreset="searchFormReset">
-          <input name="searchKeyWord" type='text' placeholder="分類信息，如:大理石" placeholder-class="placeholder-class" value='{{searchInputVal}}' />
+          <input name="searchKeyWord" type='text' placeholder="分类或图片编号,如:大理石,BT271" placeholder-class="placeholder-class" value='{{searchInputVal}}' />
           <button form-type='submit' plain='true'>
             <image src='/icons/enter.png' />
           </button>
         </form>
       </view>
       <view class='search-result'>
-        <text class=''>頁數： <text style='color:orange'>{{selectedKeywords.length}}</text></text>
+        <text class=''>页数： <text style='color:orange'>{{selectedKeywords.length}}</text></text>
       </view>
     </view>
 
     <scroll-view scroll-y style="height:{{(clientHeight-85)+'px'}}">
       <view id="scroll-view3">
         <view wx:for="{{selectedKeywords}}" wx:key="searchKey">
-          <view class='cata-item' hover-class='buttomTabItem-active' bindtap='handleLazyImgTap' data-index="{{item.page}}">
-            <text class='cata-item'> 页 {{item.page+1}} <text style='color:orange;margin-left:10px;'> {{item.keyword}} </text></text>
+          <view class='cata-item' hover-class='buttomTabItem-active' bindtap='handleLazyImgTap' data-index="{{item.page-1}}">
+            <text class='cata-item'> 页 {{item.page}} <text style='color:orange;margin-left:10px;'> {{item.keyword}} </text></text>
 
           </view>
         </view>
@@ -161,3 +171,6 @@
     </scroll-view>
   </view>
 </view>
+
+
+

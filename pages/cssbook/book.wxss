@@ -64,14 +64,22 @@
   text-align: right;
   background-color: rgb(68, 68, 68);
 }
+.headTop-category{
+  border-radius: 3px;
+  font-size:12px;
+  padding: 2px 10px;
+  color: whitesmoke;
+  float: left;
+}
 
-.headTop-Item {
+.headTop-search{
   width: 26px;
   border-radius: 3px;
   margin: 1px 10px;
   padding: 2px;
   float: right;
 }
+
 
 .bottomTab {
   height: 40px;

@@ -1,29 +1,14 @@
 var app = getApp();
 const util = require('../../utils/util.js')
 // 图片地址信息
-const imgPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/"
+const imgPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/"
 const iconPrefix = "https://integratedwall.oss-cn-beijing.aliyuncs.com/books/icon/"
-const imgSuffix = ".jpg";
 
 // 模拟所有图片队列
-const innerImgs = [];//['1', '2'];
+const innerImgs = ["books/1"];//['1', '2'];
 /**未读图片队列數據結構 {img:图片名,y:當前y軸角度,zidx: z-index(數組長度-元素下標位置）} **/
 var unreadImgs = [];
-//關鍵詞數據結構，或者redis獲取 {keyword:關鍵詞,start:開始下標,end:結束下標}       
-var keywords = [
-  { keyword: '大理石墻板', start: 0, end: 15 },
-  { keyword: '大理石1', start: 16, end: 20 },
-  { keyword: '山水系列', start: 21, end: 40 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 },
-  { keyword: '自然景觀', start: 41, end: 70 }
-];
+
 var selectedKeywords = [];
 
 //队列 api参考文档 http://www.w3school.com.cn/jsref/jsref_splice.asp
@@ -37,6 +22,9 @@ var moveSize = 10;
 
 Page({
   data: {
+    category:[],
+    categoryNames: [],
+    selectedCategoryIdx:0,
     maxSize:0,
     hideLoading: false,
     lazyImgs: lazyImgs,
@@ -45,9 +33,7 @@ Page({
     unreadImgs: unreadImgs,
     readIdx: 0,
     total: (innerImgs.length - 1),
-    keywords: keywords,
     imgPrefix: imgPrefix,
-    imgSuffix: imgSuffix,
     iconPrefix: iconPrefix,
     clientHeight: '',
     clientWidth: '',
@@ -94,13 +80,13 @@ Page({
     })
   },
   lazyLoadImg: function () {
-    let bufferImgs = innerImgs.slice(this.data.loadedImgStart, this.data.loadedImgEnd);
+    let bufferImgs = this.data.unreadImgs.slice(this.data.loadedImgStart, this.data.loadedImgEnd);
     //图片没有加载完才继续加载
     if (bufferImgs.length > 0) {
       for (var i = 0; i < bufferImgs.length; i++) {
         if (bufferImgs[i] != null) {
-          var img = imgPrefix + bufferImgs[i] + imgSuffix
-          lazyImgs.splice(this.data.loadedImgStart, 1, img);
+          var obj = bufferImgs[i];
+          lazyImgs.splice(this.data.loadedImgStart, 1, obj);
           this.data.loadedImgStart++;
         } else {
           break;
@@ -164,7 +150,7 @@ Page({
       readIdx: parseInt(checkedIdx),
       inputVal: ''
     });
-    console.log("checkedIdx=" + checkedIdx + "   readIdx=" + this.data.readIdx)
+   // console.log("checkedIdx=" + checkedIdx + "   readIdx=" + this.data.readIdx)
   },
   jumpPageFirst: function () {
     this.jumpPage(0);
@@ -187,24 +173,54 @@ Page({
   },
   searchFormSubmit: function (e) {
     //往搜索結果集合中填充信息
-    console.log(e);
+    //console.log(e);
     var keyword = e.detail.value.searchKeyWord;
     if (keyword == null || keyword == "") {
       return;
     }
-    selectedKeywords = [];
-    keywords.forEach(function (item, index) {
-      if (item.keyword.startsWith(keyword)) {
-        let start = item.start;
-        let end = item.end;
-        for (; start < end; start++) {
-          selectedKeywords.push({ keyword: item.keyword, page: start });
-        }
-      }
-    });
+    var that=this;
 
+    for (var i = 0; i < this.data.category.length;i++){
+      var item = this.data.category[i];
+      if (item.chineseName.indexOf(keyword) > -1) {
+        wx.request({
+          url: app.globalData.getFileListByCategoryUrl + item.path,
+          success: function (res) {
+            var imgs = res.data;
+            let i = 0;
+            let len = imgs.length;
+
+            var start = imgs[0].lastIndexOf('/') + 1;
+            let selectedKeywordsArr = [];
+            for (; i < len; i++) {
+                 var fileName = imgs[i];
+                var end = fileName.lastIndexOf('.');
+                var no = fileName.substring(start, end);
+                selectedKeywordsArr.push({ keyword: no, page: i+1 });
+            }
+            //重新渲染頁面
+            that.setData({
+              innerImgs: imgs,
+              unreadImgs: unreadImgs,
+              maxSize: imgs.length,
+              selectedKeywords: selectedKeywordsArr
+            });
+          }
+        });
+       
+        break;
+      }
+    }
+   
+   //从当前选中分类查找
+    let selectedKeywords = [];
+    this.data.unreadImgs.forEach(function (item, index) {
+      if (item.no.toLowerCase().indexOf(keyword.toLowerCase())>-1) {
+          selectedKeywords.push({ keyword: item.no, page: item.zidx });
+        }
+    });
     //重新渲染頁面
-    this.setData({
+    that.setData({
       selectedKeywords: selectedKeywords
     });
   },
@@ -227,8 +243,8 @@ Page({
     this.setData({
       hiddenCatagoryTab: this.data.hiddenCatagoryTab ? false : true,
       cataOrSearch: 'search',
-      selectedKeywords: [],//清除搜索歷史
-      searchInputVal: ''
+      //selectedKeywords: [],//清除搜索历史
+      //searchInputVal: ''
     })
   },
   handleJump: function () {
@@ -263,47 +279,96 @@ Page({
       scaleVal:1
     });
   },
-  onLoad: function () {
+  bindPickerChange:function(e){
+    var selectCateIdx = e.detail.value;
+    this.loadFileByCategory(this.data.category[selectCateIdx].path);
+
+    this.setData({
+      selectedCategoryIdx: selectCateIdx
+    })
+
+  },
+  loadFileByCategory:function(path){
     var that = this;
-
-    //填充BT编号图片库
-    for (var i = 1; i <= 6; i++) {
-      innerImgs.push("BT/BT-00" + i + "A");
-      innerImgs.push("BT/BT-00" + i + "B");
-    }
-    innerImgs.push("BT/BT-007");
-    innerImgs.push("BT/BT-008");
-    innerImgs.push("BT/BT-009");
-    for (var i = 7; i <= 353; i++) {
-      if (i < 10) {
-        innerImgs.push("BT/BT-00" + i);
-      } else if (i < 100) {
-        innerImgs.push("BT/BT-0" + i);
-      } else {
-        innerImgs.push("BT/BT-" + i);
-      }
-    }
-
-    //初始化未读照片队列
-    let allImgSize = innerImgs.length;
-    lazyImgs=new Array(allImgSize);
-    for (var idx = 0; idx < allImgSize; idx++) {
-      var img = { img: imgPrefix + innerImgs[idx] + imgSuffix, y: 0, zidx: allImgSize - idx };
-      unreadImgs.push(img);
-    }
-
-    wx.getSystemInfo({
+    that.setData({
+      hideLoading: false
+    });
+    wx.request({
+      url: app.globalData.getFileListByCategoryUrl+path,
       success: function (res) {
+        var files = res.data;
+
+        //初始化未读照片队列
+        let allImgSize = files.length;
+        lazyImgs = new Array(allImgSize);
+        unreadImgs=[];
+        var start = files[0].lastIndexOf('/')+1;
+        for (var idx = 0; idx < allImgSize; idx++) {
+          var fileName = files[idx];   
+          var end = fileName.lastIndexOf('.');
+          var no = fileName.substring(start,end);
+          var img = { img: imgPrefix + fileName, y: 0, zidx: allImgSize - idx, no: no };
+          unreadImgs.push(img);
+        }
+
         that.setData({
-          clientHeight: res.windowHeight,
-          clientWidth: res.windowWidth,
+          innerImgs: files,
           unreadImgs: unreadImgs,
-          maxSize: allImgSize
+          maxSize: allImgSize,
+
+          loadedImgStart:0,
+          loadedImgEnd:12,
+          readIdx: 0,
+          total: (allImgSize - 1),
+          autoPlay: false,
+          scale: false,
+          scaleVal: 1,
+          hiddenScaleView: true,
+          caleImgSrc: '',
+          maxMoveY: 0,
+          showJumpPageTab: false,
+          inputVal: '',
+          showNav: false,
+          hiddenAllImgTab: true,
+          cataOrSearch: 'search',
+          searchInputVal: ''
         }, function () {
           that.setData({
             hideLoading: true
           })
         })
+      }
+    });
+  },
+  onLoad: function () {
+    var that = this;
+
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          clientHeight: res.windowHeight,
+          clientWidth: res.windowWidth
+        })
+      }
+    });
+
+    wx.request({
+      url: app.globalData.categoryUrl, 
+      success: function (res) {
+        var categoryNames=[];
+        var cate=res.data;
+    
+        for (var k = 0, length = cate.length; k < length; k++) {
+          categoryNames[k] = cate[k].chineseName;
+        }
+
+        that.setData({
+          category: res.data,
+          categoryNames: categoryNames
+        });
+
+        //异步加载图片
+        that.loadFileByCategory(cate[0].path);
       }
     });
   }

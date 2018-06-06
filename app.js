@@ -39,6 +39,9 @@ App({
       lastX: 0,
       lastY: 0,
       direction: ""
-    }
+    },
+    categoryUrl:"http://javabus.cn:8080/category",
+    getFileListByCategoryUrl: "http://javabus.cn:8080/files/?keyPath="
+
   }
 })
