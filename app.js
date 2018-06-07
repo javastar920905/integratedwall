@@ -40,8 +40,8 @@ App({
       lastY: 0,
       direction: ""
     },
-    categoryUrl:"http://javabus.cn:8080/category",
-    getFileListByCategoryUrl: "http://javabus.cn:8080/files/?keyPath="
+    categoryUrl:"https://wall.javabus.cn/category",
+    getFileListByCategoryUrl: "https://wall.javabus.cn/files/?keyPath="
 
   }
 })
