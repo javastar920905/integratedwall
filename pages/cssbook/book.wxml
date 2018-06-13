@@ -19,12 +19,17 @@
     </view>
   </view>
 
+  <view style="height:{{(clientHeight-80)*0.25+'px'}}"></view>
 
   <!--中间主体翻书效果图册  -->
-  <view class="myswiper pre-3d" style="height:{{clientHeight?clientHeight-80+'px':'auto'}};">
+  <view class="myswiper pre-3d" style="height:{{(clientHeight-80)*0.75+'px'}};">
     <view hidden="{{!hiddenScaleView}}" bind:touchstart="handletouchtart" bind:touchend='handletouchend' bindtap='handleShowNav'>
       <block wx:for="{{unreadImgs}}" wx:key="img2">
-        <image src="{{index>readIdx+2?'':item.img}}" mode="aspectFill" class="slide-image" style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}};" />
+         <view  class="slide-image"> 
+        <image src="{{index>readIdx+2?'':item.img}}"   style="transform: rotateY({{item.y}}deg);z-index:{{item.zidx}}; height:60%;width:100%" />
+        <label style="height:30px;text-align:center;color:white; display:{{index==readIdx?'block':'none'}}">{{item.no}}</label>
+        </view>
+     
       </block>
 
       <!--目录页上的覆盖物文本  -->
